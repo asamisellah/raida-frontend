@@ -1,6 +1,6 @@
 <div class="container">
-  <h1>Onboard Driver</h1>
   <div class="form-container">
+    <h1>Driver sign up</h1>
     <form [formGroup]="onboardDriverForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Name:</label>
@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="onboardDriverForm.invalid">signup</button>
+      <button type="submit" class="btn btn-primary">signup</button>
     </form>
   </div>
 </div>
