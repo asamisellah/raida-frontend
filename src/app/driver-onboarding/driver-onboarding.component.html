@@ -1,0 +1,89 @@
+<div class="container">
+  <h1>Onboard Driver</h1>
+  <div class="form-container">
+    <form [formGroup]="onboardDriverForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" formControlName="name" class="form-control" id="name">
+        <div
+          *ngIf="onboardDriverForm.get('name')?.invalid && (onboardDriverForm.get('name')?.dirty || onboardDriverForm.get('name')?.touched)"
+          class="alert alert-danger">
+          <!-- Name validation error -->
+          <div *ngIf="onboardDriverForm.get('name')?.errors?.['required']">
+            Name is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" formControlName="email" class="form-control" id="email">
+        <div
+          *ngIf="onboardDriverForm.get('email')?.invalid && (onboardDriverForm.get('email')?.dirty || onboardDriverForm.get('email')?.touched)"
+          class="alert alert-danger">
+          <!-- Email validation errors -->
+          <div *ngIf="onboardDriverForm.get('email')?.errors?.['required']">
+            Email is required
+          </div>
+          <div *ngIf="onboardDriverForm.get('email')?.errors?.['email']">
+            Invalid email format
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" formControlName="password" class="form-control" id="password">
+        <div
+          *ngIf="onboardDriverForm.get('password')?.invalid && (onboardDriverForm.get('password')?.dirty || onboardDriverForm.get('password')?.touched)"
+          class="alert alert-danger">
+          <!-- Password validation errors -->
+          <div *ngIf="onboardDriverForm.get('password')?.errors?.['required']">
+            Password is required
+          </div>
+          <div *ngIf="onboardDriverForm.get('password')?.errors?.['minlength']">
+            Password must be at least 6 characters long
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" formControlName="phoneNumber" class="form-control" id="phoneNumber">
+        <div
+          *ngIf="onboardDriverForm.get('phoneNumber')?.invalid && (onboardDriverForm.get('phoneNumber')?.dirty || onboardDriverForm.get('phoneNumber')?.touched)"
+          class="alert alert-danger">
+          <!-- Phone number validation errors -->
+          <div *ngIf="onboardDriverForm.get('phoneNumber')?.errors?.['required']">
+            Phone number is required
+          </div>
+          <div *ngIf="onboardDriverForm.get('phoneNumber')?.errors?.['pattern']">
+            Phone number must be in the format XXX-XXX-XXXX
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="carMake">Car Make:</label>
+        <input type="text" formControlName="carMake" class="form-control" id="carMake">
+        <div
+          *ngIf="onboardDriverForm.get('carMake')?.invalid && (onboardDriverForm.get('carMake')?.dirty || onboardDriverForm.get('carMake')?.touched)"
+          class="alert alert-danger">
+          <!-- Car make validation error -->
+          <div *ngIf="onboardDriverForm.get('carMake')?.errors?.['required']">
+            Car make is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="carModel">Car Model:</label>
+        <input type="text" formControlName="carModel" class="form-control" id="carModel">
+        <div
+          *ngIf="onboardDriverForm.get('carModel')?.invalid && (onboardDriverForm.get('carModel')?.dirty || onboardDriverForm.get('carModel')?.touched)"
+          class="alert alert-danger">
+          <!-- Car model validation error -->
+          <div *ngIf="onboardDriverForm.get('carModel')?.errors?.['required']">
+            Car model is required
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="onboardDriverForm.invalid">signup</button>
+    </form>
+  </div>
+</div>
