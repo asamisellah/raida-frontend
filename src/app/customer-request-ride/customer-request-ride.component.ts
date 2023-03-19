@@ -1,59 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Location } from '../models/models';
+import { RideService } from '../services/ride.service';
 
 @Component({
   selector: 'app-customer-request-ride',
   templateUrl: './customer-request-ride.component.html',
-  // styleUrls: ['./customer-request-ride.component.css'],
+  styleUrls: ['./customer-request-ride.component.sass'],
 })
 export class CustomerRequestRideComponent implements OnInit {
-  requestRideForm!: FormGroup;
-  originLatitude: number | undefined;
-  originLongitude: number | undefined;
-  destinationLatitude: number | undefined;
-  destinationLongitude: number | undefined;
+  rideRequestForm: any;
+  status: string | undefined;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private rideRequestService: RideService
+  ) {}
 
-  ngOnInit() {
-    this.requestRideForm = this.fb.group({
-      origin: ['', Validators.required],
-      destination: ['', Validators.required],
+  ngOnInit(): void {
+    this.rideRequestForm = this.fb.group({
+      pickup: this.fb.group({
+        longitude: ['36.8205454'],
+        latitude: [-1.162667],
+      }),
+      destination: this.fb.group({
+        longitude: [36.81107818730816],
+        latitude: [-1.2365680364174565],
+      }),
+      passengerId: ['641390be02533b1bb8cb4bf9'],
     });
-    // this.loadGoogleMaps();
+
+    // subscribe to form value changes to get pickup and destination locations
+    // this.rideRequestForm.valueChanges.subscribe((values) => {
+    //   const pickup = values.pickup;
+    //   const destination = values.destination;
+    //   console.log('Pickup Location: ', pickup.longitude, pickup.latitude);
+    //   console.log(
+    //     'Destination Location: ',
+    //     destination.longitude,
+    //     destination.latitude
+    //   );
+    // });
   }
+  onSubmit(): void {
+    console.log('Ride Request Form: ', this.rideRequestForm);
+    if (!this.rideRequestForm || !this.rideRequestForm.invalid) {
+      this.status = 'Invalid request';
+    }
+    const rideRequest = this.rideRequestForm?.value;
+    this.status = 'Creating Ride Request...';
 
-  // loadGoogleMaps() {
-  //   this.mapsAPILoader.load().then(() => {
-  //     const autocompleteOrigin = new google.maps.places.Autocomplete(
-  //       document.getElementById('origin')
-  //     );
-  //     const autocompleteDestination = new google.maps.places.Autocomplete(
-  //       document.getElementById('destination')
-  //     );
-  //     autocompleteOrigin.addListener('place_changed', () => {
-  //       const place = autocompleteOrigin.getPlace();
-  //       this.originLatitude = place.geometry.location.lat();
-  //       this.originLongitude = place.geometry.location.lng();
-  //     });
-  //     autocompleteDestination.addListener('place_changed', () => {
-  //       const place = autocompleteDestination.getPlace();
-  //       this.destinationLatitude = place.geometry.location.lat();
-  //       this.destinationLongitude = place.geometry.location.lng();
-  //     });
-  //   });
-  // }
-
-  // onSubmit() {
-  //   const originLocation: Location = {
-  //     latitude: this.originLatitude,
-  //     longitude: this.originLongitude,
-  //   };
-  //   const destinationLocation: Location = {
-  //     latitude: this.destinationLatitude,
-  //     longitude: this.destinationLongitude,
-  //   };
-  //   // Here, you can send the ride request to the backend with the originLocation and destinationLocation.
-  // }
+    this.rideRequestService.requestRide(rideRequest).subscribe(
+      (response) => {
+        console.log('Ride Request Created: ', response);
+        this.status = 'Ride Request Created';
+      },
+      (error) => {
+        console.log('Error Creating Ride Request: ', error);
+        this.status = 'Error Creating Ride Request';
+      }
+    );
+  }
 }

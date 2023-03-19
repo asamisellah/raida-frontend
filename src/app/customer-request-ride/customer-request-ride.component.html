@@ -1,0 +1,31 @@
+<!-- show failure message-->
+<div>
+  <h1>Driver sign up</h1>
+  <div *ngIf="status" class="alert alert-danger">
+    {{status}}
+  </div>
+  <form [formGroup]="rideRequestForm" (ngSubmit)="onSubmit()">
+
+    <div>
+      <label for="pickupLongitude">Pickup Longitude:</label>
+      <input id="pickupLongitude" type="number" formControlName="pickupLongitude" />
+    </div>
+    <div>
+      <label for="pickupLatitude">Pickup Latitude:</label>
+      <input id="pickupLatitude" type="number" formControlName="pickupLatitude" />
+    </div>
+    <div>
+      <label for="destinationLongitude">Destination Longitude:</label>
+      <input id="destinationLongitude" type="number" formControlName="destinationLongitude" />
+    </div>
+    <div>
+      <label for="destinationLatitude">Destination Latitude:</label>
+      <input id="destinationLatitude" type="number" formControlName="destinationLatitude" />
+    </div>
+    <div>
+      <label for="passengerId">Passenger ID:</label>
+      <input id="passengerId" type="text" formControlName="passengerId" />
+    </div>
+    <button type="submit" [disabled]="rideRequestForm.invalid">Request Ride</button>
+  </form>
+</div>

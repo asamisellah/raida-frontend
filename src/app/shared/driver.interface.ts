@@ -9,6 +9,5 @@ export interface Driver {
   carMake: string;
   carModel: string;
   carDescription: string;
-  licenseNumber: string;
   licensePlate: string;
 }
