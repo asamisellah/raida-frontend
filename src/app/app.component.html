@@ -4,11 +4,12 @@
     <div class="logo">
       <h1 routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Raida</h1>
     </div>
-    <ul>
+    <ul *ngIf="currentRoute">
       <li><a routerLink="/request-ride" routerLinkActive="active" ariaCurrentWhenActive="page">Request a Ride</a></li>
       <li><a routerLink="/onboard-driver" routerLinkActive="active" ariaCurrentWhenActive="page"
           class="btn btn-signup">Sign Up as Driver</a></li>
     </ul>
   </nav>
 </header>
+
 <router-outlet></router-outlet>
