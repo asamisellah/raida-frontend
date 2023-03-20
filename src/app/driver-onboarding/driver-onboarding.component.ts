@@ -43,7 +43,7 @@ export class DriverOnboardingComponent {
           (response) => {
             console.log('Driver onboarded successfully', response);
             // Navigate to a different page or show a success message
-            this.router.navigate(['/drivers']);
+            this.router.navigate(['/drivers/dashboard']);
           },
           (error) => {
             console.error('Error onboarding driver', error);

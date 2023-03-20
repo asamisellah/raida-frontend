@@ -7,7 +7,7 @@ import { Ride } from '../shared/general.interfaces';
   providedIn: 'root',
 })
 export class RideService {
-  private apiUrl = 'http://127.0.0.1:3000/drivers';
+  private apiUrl = 'http://127.0.0.1:3000/rides';
 
   constructor(private http: HttpClient) {}
 

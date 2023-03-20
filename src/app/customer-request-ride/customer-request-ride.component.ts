@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RideService } from '../services/ride.service';
+import { Ride } from '../shared/general.interfaces';
 
 @Component({
   selector: 'app-customer-request-ride',
@@ -13,51 +14,54 @@ export class CustomerRequestRideComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private rideRequestService: RideService
+    private rideRequestService: RideService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.rideRequestForm = this.fb.group({
-      pickup: this.fb.group({
-        longitude: ['36.8205454'],
-        latitude: [-1.162667],
-      }),
-      destination: this.fb.group({
-        longitude: [36.81107818730816],
-        latitude: [-1.2365680364174565],
-      }),
-      passengerId: ['641390be02533b1bb8cb4bf9'],
+      pickupLongitude: [<number | null>null, Validators.required],
+      pickupLatitude: [<number | null>null, Validators.required],
+      destinationLongitude: [<number | null>null, Validators.required],
+      destinationLatitude: [<number | null>null, Validators.required],
+      passengerId: ['641390be02533b1bb8cb4bf9', Validators.required],
     });
-
-    // subscribe to form value changes to get pickup and destination locations
-    // this.rideRequestForm.valueChanges.subscribe((values) => {
-    //   const pickup = values.pickup;
-    //   const destination = values.destination;
-    //   console.log('Pickup Location: ', pickup.longitude, pickup.latitude);
-    //   console.log(
-    //     'Destination Location: ',
-    //     destination.longitude,
-    //     destination.latitude
-    //   );
-    // });
   }
-  onSubmit(): void {
-    console.log('Ride Request Form: ', this.rideRequestForm);
-    if (!this.rideRequestForm || !this.rideRequestForm.invalid) {
-      this.status = 'Invalid request';
-    }
-    const rideRequest = this.rideRequestForm?.value;
-    this.status = 'Creating Ride Request...';
 
-    this.rideRequestService.requestRide(rideRequest).subscribe(
-      (response) => {
-        console.log('Ride Request Created: ', response);
-        this.status = 'Ride Request Created';
-      },
-      (error) => {
-        console.log('Error Creating Ride Request: ', error);
-        this.status = 'Error Creating Ride Request';
-      }
-    );
+  onSubmit(): void {
+    this.status = undefined;
+    console.log('Ride Request Form: ', this.rideRequestForm);
+    if (this.rideRequestForm.valid) {
+      const rideRequest: Ride = {
+        pickup: {
+          longitude: this.rideRequestForm.value.pickupLongitude,
+          latitude: this.rideRequestForm.value.pickupLatitude,
+        },
+        destination: {
+          longitude: this.rideRequestForm.value.destinationLongitude,
+          latitude: this.rideRequestForm.value.destinationLatitude,
+        },
+        passangerId: this.rideRequestForm.value.passengerId,
+      };
+
+      this.status = 'Creating Ride Request...';
+
+      this.rideRequestService.requestRide(rideRequest).subscribe(
+        (response) => {
+          console.log('Ride Request Created: ', response);
+          this.status = 'Driver Found!';
+          this.cd.detectChanges();
+        },
+        (error) => {
+          console.log('Error Creating Ride Request: ', error);
+          this.status = 'Error Creating Ride Request';
+
+          this.cd.detectChanges();
+        }
+      );
+    } else {
+      this.status = 'Invalid Ride Request';
+    }
+    this.cd.detectChanges();
   }
 }

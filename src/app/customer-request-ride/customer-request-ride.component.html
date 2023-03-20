@@ -1,31 +1,60 @@
 <!-- show failure message-->
-<div>
-  <h1>Driver sign up</h1>
-  <div *ngIf="status" class="alert alert-danger">
-    {{status}}
-  </div>
-  <form [formGroup]="rideRequestForm" (ngSubmit)="onSubmit()">
+<div class="container">
+  <div class="form-container">
 
-    <div>
-      <label for="pickupLongitude">Pickup Longitude:</label>
-      <input id="pickupLongitude" type="number" formControlName="pickupLongitude" />
+    <h1>Request Ride</h1>
+
+    <div *ngIf="status" class="alert alert-danger">
+      {{status}}
     </div>
-    <div>
-      <label for="pickupLatitude">Pickup Latitude:</label>
-      <input id="pickupLatitude" type="number" formControlName="pickupLatitude" />
-    </div>
-    <div>
-      <label for="destinationLongitude">Destination Longitude:</label>
-      <input id="destinationLongitude" type="number" formControlName="destinationLongitude" />
-    </div>
-    <div>
-      <label for="destinationLatitude">Destination Latitude:</label>
-      <input id="destinationLatitude" type="number" formControlName="destinationLatitude" />
-    </div>
-    <div>
-      <label for="passengerId">Passenger ID:</label>
-      <input id="passengerId" type="text" formControlName="passengerId" />
-    </div>
-    <button type="submit" [disabled]="rideRequestForm.invalid">Request Ride</button>
-  </form>
+
+    <form [formGroup]="rideRequestForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="pickupLongitude">Pickup Longitude:</label>
+        <input class="form-control" id="pickupLongitude" type="number" formControlName="pickupLongitude" />
+        <div
+          *ngIf="rideRequestForm.get('pickupLongitude')?.errors && (rideRequestForm.get('pickupLongitude')?.dirty || rideRequestForm.get('pickupLongitude')?.touched)"
+          class="alert alert-danger">
+          <div *ngIf="rideRequestForm.get('pickupLongitude')?.errors?.['required']">
+            Pickup Longitude is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="pickupLatitude">Pickup Latitude:</label>
+        <input class="form-control" id="pickupLatitude" type="number" formControlName="pickupLatitude" />
+        <div
+          *ngIf="rideRequestForm.get('pickupLatitude')?.errors && (rideRequestForm.get('pickupLatitude')?.dirty || rideRequestForm.get('pickupLatitude')?.touched)"
+          class="alert alert-danger">
+          <div *ngIf="rideRequestForm.get('pickupLatitude')?.errors?.['required']">
+            Pickup Latitude is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="destinationLongitude">Destination Longitude:</label>
+        <input class="form-control" id="destinationLongitude" type="number" formControlName="destinationLongitude" />
+        <div
+          *ngIf="rideRequestForm.get('destinationLongitude')?.errors && (rideRequestForm.get('destinationLongitude')?.dirty || rideRequestForm.get('destinationLongitude')?.touched)"
+          class="alert alert-danger">
+          <div *ngIf="rideRequestForm.get('destinationLongitude')?.errors?.['required']">
+            Destination Longitude is required
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="destinationLatitude">Destination Latitude:</label>
+        <input class="form-control" id="destinationLatitude" type="number" formControlName="destinationLatitude" />
+        <div
+          *ngIf="rideRequestForm.get('destinationLatitude')?.errors && (rideRequestForm.get('destinationLatitude')?.dirty || rideRequestForm.get('destinationLatitude')?.touched)"
+          class="alert alert-danger">
+          <div *ngIf="rideRequestForm.get('destinationLatitude')?.errors?.['required']">
+            Destination Latitude is required
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Request Ride</button>
+    </form>
+  </div>
 </div>
