@@ -1,59 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Location } from '../models/models';
+import { RideService } from '../services/ride.service';
+import { Ride } from '../shared/general.interfaces';
 
 @Component({
   selector: 'app-customer-request-ride',
   templateUrl: './customer-request-ride.component.html',
-  // styleUrls: ['./customer-request-ride.component.css'],
+  styleUrls: ['./customer-request-ride.component.sass'],
 })
 export class CustomerRequestRideComponent implements OnInit {
-  requestRideForm!: FormGroup;
-  originLatitude: number | undefined;
-  originLongitude: number | undefined;
-  destinationLatitude: number | undefined;
-  destinationLongitude: number | undefined;
+  rideRequestForm: any;
+  status: string | undefined;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private rideRequestService: RideService,
+    private cd: ChangeDetectorRef
+  ) {}
 
-  ngOnInit() {
-    this.requestRideForm = this.fb.group({
-      origin: ['', Validators.required],
-      destination: ['', Validators.required],
+  ngOnInit(): void {
+    this.rideRequestForm = this.fb.group({
+      pickupLongitude: [<number | null>null, Validators.required],
+      pickupLatitude: [<number | null>null, Validators.required],
+      destinationLongitude: [<number | null>null, Validators.required],
+      destinationLatitude: [<number | null>null, Validators.required],
+      passengerId: ['641390be02533b1bb8cb4bf9', Validators.required],
     });
-    // this.loadGoogleMaps();
   }
 
-  // loadGoogleMaps() {
-  //   this.mapsAPILoader.load().then(() => {
-  //     const autocompleteOrigin = new google.maps.places.Autocomplete(
-  //       document.getElementById('origin')
-  //     );
-  //     const autocompleteDestination = new google.maps.places.Autocomplete(
-  //       document.getElementById('destination')
-  //     );
-  //     autocompleteOrigin.addListener('place_changed', () => {
-  //       const place = autocompleteOrigin.getPlace();
-  //       this.originLatitude = place.geometry.location.lat();
-  //       this.originLongitude = place.geometry.location.lng();
-  //     });
-  //     autocompleteDestination.addListener('place_changed', () => {
-  //       const place = autocompleteDestination.getPlace();
-  //       this.destinationLatitude = place.geometry.location.lat();
-  //       this.destinationLongitude = place.geometry.location.lng();
-  //     });
-  //   });
-  // }
+  onSubmit(): void {
+    this.status = undefined;
+    console.log('Ride Request Form: ', this.rideRequestForm);
+    if (this.rideRequestForm.valid) {
+      const rideRequest: Ride = {
+        pickup: {
+          longitude: this.rideRequestForm.value.pickupLongitude,
+          latitude: this.rideRequestForm.value.pickupLatitude,
+        },
+        destination: {
+          longitude: this.rideRequestForm.value.destinationLongitude,
+          latitude: this.rideRequestForm.value.destinationLatitude,
+        },
+        passangerId: this.rideRequestForm.value.passengerId,
+      };
 
-  // onSubmit() {
-  //   const originLocation: Location = {
-  //     latitude: this.originLatitude,
-  //     longitude: this.originLongitude,
-  //   };
-  //   const destinationLocation: Location = {
-  //     latitude: this.destinationLatitude,
-  //     longitude: this.destinationLongitude,
-  //   };
-  //   // Here, you can send the ride request to the backend with the originLocation and destinationLocation.
-  // }
+      this.status = 'Creating Ride Request...';
+
+      this.rideRequestService.requestRide(rideRequest).subscribe(
+        (response) => {
+          console.log('Ride Request Created: ', response);
+          this.status = 'Driver Found!';
+          this.cd.detectChanges();
+        },
+        (error) => {
+          console.log('Error Creating Ride Request: ', error);
+          this.status = 'Error Creating Ride Request';
+
+          this.cd.detectChanges();
+        }
+      );
+    } else {
+      this.status = 'Invalid Ride Request';
+    }
+    this.cd.detectChanges();
+  }
 }
