@@ -14,6 +14,7 @@ export class DriverOnboardingComponent {
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
+    username: ['', Validators.required],
     phoneNumber: ['', Validators.required],
     location: this.fb.group({
       latitude: <number | null>null,
@@ -33,8 +34,11 @@ export class DriverOnboardingComponent {
     private router: Router
   ) {}
 
-  onSubmit() {
+  ngOnInit(): void {
     this.getGeoLocation();
+  }
+
+  onSubmit() {
     console.log(this.onboardDriverForm);
     if (this.onboardDriverForm.valid) {
       this.onboardDriverService
@@ -43,7 +47,7 @@ export class DriverOnboardingComponent {
           (response) => {
             console.log('Driver onboarded successfully', response);
             // Navigate to a different page or show a success message
-            this.router.navigate(['/drivers/dashboard']);
+            this.router.navigate(['/driver/dashboard']);
           },
           (error) => {
             console.error('Error onboarding driver', error);
