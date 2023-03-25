@@ -1,12 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RideService } from '../services/ride.service';
-import { Ride } from '../shared/general.interfaces';
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { RideService } from "../services/ride.service";
+import { Ride } from "../shared/general.interfaces";
 
 @Component({
-  selector: 'app-customer-request-ride',
-  templateUrl: './customer-request-ride.component.html',
-  styleUrls: ['./customer-request-ride.component.sass'],
+  selector: "app-customer-request-ride",
+  templateUrl: "./customer-request-ride.component.html",
+  styleUrls: ["./customer-request-ride.component.sass"],
 })
 export class CustomerRequestRideComponent implements OnInit {
   rideRequestForm: any;
@@ -24,13 +24,13 @@ export class CustomerRequestRideComponent implements OnInit {
       pickupLatitude: [<number | null>null, Validators.required],
       destinationLongitude: [<number | null>null, Validators.required],
       destinationLatitude: [<number | null>null, Validators.required],
-      passengerId: ['641390be02533b1bb8cb4bf9', Validators.required],
+      passengerId: ["641ece396eb3c1f9b4fb689f", Validators.required],
     });
   }
 
   onSubmit(): void {
     this.status = undefined;
-    console.log('Ride Request Form: ', this.rideRequestForm);
+    console.log("Ride Request Form: ", this.rideRequestForm);
     if (this.rideRequestForm.valid) {
       const rideRequest: Ride = {
         pickup: {
@@ -44,23 +44,23 @@ export class CustomerRequestRideComponent implements OnInit {
         passangerId: this.rideRequestForm.value.passengerId,
       };
 
-      this.status = 'Creating Ride Request...';
+      this.status = "Creating Ride Request...";
 
       this.rideRequestService.requestRide(rideRequest).subscribe(
         (response) => {
-          console.log('Ride Request Created: ', response);
-          this.status = 'Driver Found!';
+          console.log("Ride Request Created: ", response);
+          this.status = "Driver Found!";
           this.cd.detectChanges();
         },
         (error) => {
-          console.log('Error Creating Ride Request: ', error);
-          this.status = 'Error Creating Ride Request';
+          console.log("Error Creating Ride Request: ", error);
+          this.status = "Error Creating Ride Request";
 
           this.cd.detectChanges();
         }
       );
     } else {
-      this.status = 'Invalid Ride Request';
+      this.status = "Invalid Ride Request";
     }
     this.cd.detectChanges();
   }

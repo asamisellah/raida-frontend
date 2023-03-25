@@ -9,6 +9,7 @@ import { CustomerRequestRideModule } from './customer-request-ride/customer-requ
 import { DriverOnboardingModule } from './driver-onboarding/driver-onboarding.module';
 import { LandingComponent } from './pages/landing/landing.component';
 import { DriverDashboardModule } from './driver-dashboard/driver-dashboard.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const config: SocketIoConfig = { url: 'http://127.0.0.1:3000', options: {transports: ['polling'] } };
 
@@ -22,6 +23,7 @@ const config: SocketIoConfig = { url: 'http://127.0.0.1:3000', options: {transpo
     CustomerRequestRideModule,
     DriverDashboardModule,
     SocketIoModule.forRoot(config),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

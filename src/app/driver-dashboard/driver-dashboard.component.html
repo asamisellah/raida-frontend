@@ -1,2 +1,12 @@
-<h3>Driver App Notifications</h3>
-<div id="notification"></div>
+<mat-card>
+  <mat-card-title>Incoming ride requests:</mat-card-title>
+  <mat-card-content>
+    <div *ngIf="rideRequest" class="ride-requests container">
+      <p>You have a ride request from {{rideRequest.passanger.name }}</p>
+
+      <button (click)="acceptRequest()">Accept</button>
+      <button (click)="rejectRequest()">Reject</button>
+    </div>
+
+  </mat-card-content>
+</mat-card>
